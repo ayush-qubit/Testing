@@ -1,16 +1,30 @@
 #include <stdio.h>
 
-int x=10;
+void foo1();
+void foo2();
+void foo3();
+void foo4();
 
-// void foo(){
-// 	x=20;
-// }
+void foo1() {
+   foo2();
+}
 
-int main(){
-	float y=20.5;
-	int *p=NULL;
-	p=&y;
-	// foo();
-	// printf("%d\n",x);
-	return 0;
+void foo2() {
+   foo3();
+}
+
+void foo3() {
+   foo4();
+   main();
+   foo2();
+}
+
+void foo4() {
+   foo1();
+   foo2();
+   foo4();
+}
+
+int main() {
+   foo1();
 }

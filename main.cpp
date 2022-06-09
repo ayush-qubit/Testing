@@ -14,10 +14,54 @@
 #include "llvm/IRReader/IRReader.h"
 #include "llvm/Support/SourceMgr.h"
 #include "llvm/Transforms/Utils/UnifyFunctionExitNodes.h"
-#include "VascoAbstraction/Analysis.h"
+#include "llvm/Analysis/CallGraph.h"
+#include <llvm/ADT/DepthFirstIterator.h>
 #include <iostream>
+#include <vector>
+#include <map>
+#include "chrono"
 
 using namespace llvm;
+using namespace std::chrono;
+using namespace std;
+
+std::map<llvm::CallGraphNode *,bool> visited;
+std::map<llvm::CallGraphNode *,int> Start,End;
+std::map<llvm::Function *,int> calledFunctionsCount;
+int Time;
+int BackEdges;
+
+void traverse_dfs(llvm::CallGraphNode* node) {
+	// llvm::outs() << "Traverse dfs: " <<node->getFunction()->getName() << "\n";
+	visited[node] = true;
+	Start[node] = Time;
+	End[node] = INT_MAX;
+	Time++;
+	for(int i = 0; i<calledFunctionsCount[node->getFunction()]; i++) {
+		llvm::CallGraphNode *neighbour = (*node)[i];
+		// llvm::outs() << "\t" << neighbour->getFunction()->getName() << "\n";
+		if(not visited[neighbour]) {
+			traverse_dfs(neighbour);
+		} else {
+			if(visited[node] == true) {
+				BackEdges++;
+			}
+		}
+		End[node] = Time;
+		Time++;
+	}
+}
+
+void dfs(vector<llvm::CallGraphNode *> Vertices) {
+	int n = Vertices.size();
+	for(auto node : Vertices) {
+		if(node->getFunction()->getName().str() == "main") {
+			traverse_dfs(node);
+			break;
+		}
+	}
+	llvm::outs() << "Number of backedges are: " << BackEdges << "\n";
+}
 
 int main(int argc, char **argv){
 	if(argc<1){
@@ -33,22 +77,57 @@ int main(int argc, char **argv){
 	for (Function &F : M.get()->functions()) {
     	FPM.run(F);
   	}
-  	for(Function &F : M.get()->functions()){
-  		for(BasicBlock &B : F){
-  			for(Instruction &I : B){
-  				// if(CallInst *inst = dyn_cast<CallInst>(&I)){
-  				// 	Function *F = inst->getCalledFunction();
-  				// 	outs() << F->getName() << " : ";
-  				// 	outs() << F->isDeclaration() << "\n";
-  				// }
-				if(StoreInst *inst = dyn_cast<StoreInst>(&I)){
-					Value *val = inst->getValueOperand();
-					if(isa<Constant>(val)){
-						outs() << I << "\n";
-						// outs() << val->getName() << "\n";
+	CallGraph CG = CallGraph(*M);
+	vector<llvm::CallGraphNode *> Vertices;
+	for(Function &F : M.get()->functions()) {
+		int count = 0;
+		for(BasicBlock &B : F) {
+			for(llvm::Instruction &Inst : B) {
+				if(llvm::CallInst *CI = dyn_cast<llvm::CallInst>(&Inst)) {
+					llvm::Function *target_function = CI->getCalledFunction();
+					if(not target_function || target_function->isDeclaration()) {
+						continue;
 					}
+					count++;
 				}
-  			}
-  		}
-  	}
+			}
+		}
+		calledFunctionsCount[&F] = count;
+		// llvm::outs() << "Call instruction in " << F.getName() << " = " << count << "\n";
+	}
+	for(auto IT = CG.begin(), EI = CG.end(); IT != EI; IT++) {
+		auto temp = IT->first;
+		if(not temp) {
+			continue;
+		}
+		Vertices.push_back(IT->second.get());
+		// llvm::outs() << temp->getName() << "\n";
+	}
+	// llvm::outs() << "Size of Vertices are: " << Vertices.size() << "\n";
+	dfs(Vertices);
+	// int countBB = 0;
+	// int countCI = 0;
+	// int countFunc = 0;
+	// int countBBPerFunc = 0;
+  	// for(Function &F : M.get()->functions()){
+	// 	countFunc++;
+	// 	countBBPerFunc = 0;
+	// 	// llvm::outs() << "\nFunction Name: " << F.getName() << " = ";
+	// 	for(BasicBlock &B : F){
+	// 		countBB++;
+	// 		countBBPerFunc++;
+	// 		for(llvm::Instruction &Inst : B) {
+	// 			if(llvm::CallInst *CI = dyn_cast<llvm::CallInst>(&Inst)) {
+	// 				llvm::Function *target_function = CI->getCalledFunction();
+	// 				if(target_function && not target_function->isDeclaration()) {
+	// 					countCI++;
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// 	// llvm::outs() << countBBPerFunc;
+  	// }
+	// llvm::outs() << "\nNumber of BB are : " << countBB;
+	// llvm::outs() << "\nNumber of CI are : " << countCI;
+	// llvm::outs() << "\nNumber of Functions: " << countFunc << "\n";
 }

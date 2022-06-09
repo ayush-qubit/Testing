@@ -20,5 +20,9 @@ include(GNUInstallDirs)
 
 add_executable(testing main.cpp)
 
+set_target_properties(testing PROPERTIES
+    COMPILE_FLAGS "-fno-rtti -g"
+)
+
 llvm_map_components_to_libnames(llvm_libs support core irreader passes transformutils)
 target_link_libraries(testing ${llvm_libs})

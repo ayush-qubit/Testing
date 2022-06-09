@@ -1,0 +1,5 @@
+digraph "CFG for 'foo3' function" {
+	label="CFG for 'foo3' function";
+
+	Node0xe6ee70 [shape=record,color="#b70d28ff", style=filled, fillcolor="#b70d2870",label="{entry:\l  call void @foo4(), !dbg !10\l  ret void, !dbg !11\l}"];
+}
