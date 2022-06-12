@@ -25,31 +25,38 @@ using namespace llvm;
 using namespace std::chrono;
 using namespace std;
 
-std::map<llvm::CallGraphNode *,bool> visited;
+std::map<llvm::CallGraphNode *,int> visited;
 std::map<llvm::CallGraphNode *,int> Start,End;
 std::map<llvm::Function *,int> calledFunctionsCount;
 int Time;
-int BackEdges;
+int DirectRecursion, IndirectRecursion;
 
 void traverse_dfs(llvm::CallGraphNode* node) {
 	// llvm::outs() << "Traverse dfs: " <<node->getFunction()->getName() << "\n";
-	visited[node] = true;
+	visited[node] = 1;
 	Start[node] = Time;
 	End[node] = INT_MAX;
 	Time++;
 	for(int i = 0; i<calledFunctionsCount[node->getFunction()]; i++) {
 		llvm::CallGraphNode *neighbour = (*node)[i];
 		// llvm::outs() << "\t" << neighbour->getFunction()->getName() << "\n";
-		if(not visited[neighbour]) {
+		if(visited[neighbour] == 0) {
 			traverse_dfs(neighbour);
 		} else {
-			if(visited[node] == true) {
-				BackEdges++;
+			if(visited[neighbour] == 1) {
+				if(neighbour == node) {
+					DirectRecursion++;
+					// llvm::outs() << "\n Direct recursion: " << node->getFunction()->getName() << "-->" << neighbour->getFunction()->getName();
+				} else{
+					IndirectRecursion++;
+					// llvm::outs() << "\n Indirect recursion: " << node->getFunction()->getName() << "-->" << neighbour->getFunction()->getName();
+				}
 			}
 		}
 		End[node] = Time;
 		Time++;
 	}
+	visited[node] = 2;
 }
 
 void dfs(vector<llvm::CallGraphNode *> Vertices) {
@@ -60,7 +67,8 @@ void dfs(vector<llvm::CallGraphNode *> Vertices) {
 			break;
 		}
 	}
-	llvm::outs() << "Number of backedges are: " << BackEdges << "\n";
+	llvm::outs() << "\nNumber of Direct recursive calls are: " << DirectRecursion << "\n";
+	llvm::outs() << "\nNumber of Indirect recursive calls are: " << IndirectRecursion << "\n";
 }
 
 int main(int argc, char **argv){
@@ -100,34 +108,37 @@ int main(int argc, char **argv){
 		if(not temp) {
 			continue;
 		}
+		visited[IT->second.get()] = 0;
 		Vertices.push_back(IT->second.get());
 		// llvm::outs() << temp->getName() << "\n";
 	}
 	// llvm::outs() << "Size of Vertices are: " << Vertices.size() << "\n";
 	dfs(Vertices);
-	// int countBB = 0;
-	// int countCI = 0;
-	// int countFunc = 0;
-	// int countBBPerFunc = 0;
-  	// for(Function &F : M.get()->functions()){
-	// 	countFunc++;
-	// 	countBBPerFunc = 0;
-	// 	// llvm::outs() << "\nFunction Name: " << F.getName() << " = ";
-	// 	for(BasicBlock &B : F){
-	// 		countBB++;
-	// 		countBBPerFunc++;
-	// 		for(llvm::Instruction &Inst : B) {
-	// 			if(llvm::CallInst *CI = dyn_cast<llvm::CallInst>(&Inst)) {
-	// 				llvm::Function *target_function = CI->getCalledFunction();
-	// 				if(target_function && not target_function->isDeclaration()) {
-	// 					countCI++;
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// 	// llvm::outs() << countBBPerFunc;
-  	// }
-	// llvm::outs() << "\nNumber of BB are : " << countBB;
-	// llvm::outs() << "\nNumber of CI are : " << countCI;
-	// llvm::outs() << "\nNumber of Functions: " << countFunc << "\n";
+	int countBB = 0;
+	int countCI = 0;
+	int countFunc = 0;
+	int countBBPerFunc = 0;
+  	for(Function &F : M.get()->functions()){
+		countFunc++;
+		countBBPerFunc = 0;
+		llvm::outs() << "\nFunction Name: " << F.getName() << " = ";
+		for(BasicBlock &B : F){
+			countBB++;
+			countBBPerFunc++;
+			for(llvm::Instruction &Inst : B) {
+				if(llvm::CallInst *CI = dyn_cast<llvm::CallInst>(&Inst)) {
+					llvm::Function *target_function = CI->getCalledFunction();
+					if(target_function && not target_function->isDeclaration()) {
+						countCI++;
+					}
+				}
+			}
+		}
+		llvm::outs() << countBBPerFunc;
+  	}
+	  llvm::outs() << "\nNumber of Instruction: " << M->getInstructionCount();
+	llvm::outs() << "\nNumber of BB are : " << countBB;
+	llvm::outs() << "\nNumber of CI are : " << countCI;
+	llvm::outs() << "\nNumber of Functions: " << countFunc;
+	llvm::outs() << "\nNumber of BB/Func: " << countBB/countFunc << "\n";
 }

@@ -7,6 +7,8 @@ void foo4();
 
 void foo1() {
    foo2();
+   foo1();
+   foo1();
 }
 
 void foo2() {
@@ -15,8 +17,8 @@ void foo2() {
 
 void foo3() {
    foo4();
-   main();
    foo2();
+   main();
 }
 
 void foo4() {

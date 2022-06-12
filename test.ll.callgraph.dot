@@ -1,16 +1,19 @@
 digraph "Call graph: test.ll" {
 	label="Call graph: test.ll";
 
-	Node0x1fba180 [shape=record,label="{foo1}"];
-	Node0x1fba180 -> Node0x1fba200;
-	Node0x1fba200 [shape=record,label="{foo2}"];
-	Node0x1fba200 -> Node0x1fba720;
-	Node0x1fba720 [shape=record,label="{foo3}"];
-	Node0x1fba720 -> Node0x1fba850;
-	Node0x1fba850 [shape=record,label="{foo4}"];
-	Node0x1fba850 -> Node0x1fba180;
-	Node0x1fba850 -> Node0x1fba200;
-	Node0x1fba850 -> Node0x1fba850;
-	Node0x1fba9e0 [shape=record,label="{main}"];
-	Node0x1fba9e0 -> Node0x1fba180;
+	Node0x199d650 [shape=record,label="{foo1}"];
+	Node0x199d650 -> Node0x199d6d0;
+	Node0x199d650 -> Node0x199d650;
+	Node0x199d6d0 [shape=record,label="{foo2}"];
+	Node0x199d6d0 -> Node0x199dca0;
+	Node0x199dca0 [shape=record,label="{foo3}"];
+	Node0x199dca0 -> Node0x199ddd0;
+	Node0x199dca0 -> Node0x199d6d0;
+	Node0x199dca0 -> Node0x199de50;
+	Node0x199ddd0 [shape=record,label="{foo4}"];
+	Node0x199ddd0 -> Node0x199d650;
+	Node0x199ddd0 -> Node0x199d6d0;
+	Node0x199ddd0 -> Node0x199ddd0;
+	Node0x199de50 [shape=record,label="{main}"];
+	Node0x199de50 -> Node0x199d650;
 }

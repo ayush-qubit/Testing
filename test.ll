@@ -7,39 +7,41 @@ target triple = "x86_64-pc-linux-gnu"
 define dso_local void @foo1() #0 !dbg !7 {
 entry:
   call void @foo2(), !dbg !10
-  ret void, !dbg !11
+  call void @foo1(), !dbg !11
+  call void @foo1(), !dbg !12
+  ret void, !dbg !13
 }
 
 ; Function Attrs: noinline nounwind optnone uwtable
-define dso_local void @foo2() #0 !dbg !12 {
+define dso_local void @foo2() #0 !dbg !14 {
 entry:
-  call void @foo3(), !dbg !13
-  ret void, !dbg !14
+  call void @foo3(), !dbg !15
+  ret void, !dbg !16
 }
 
 ; Function Attrs: noinline nounwind optnone uwtable
-define dso_local void @foo3() #0 !dbg !15 {
+define dso_local void @foo3() #0 !dbg !17 {
 entry:
-  call void @foo4(), !dbg !16
-  %call = call i32 @main(), !dbg !17
-  call void @foo2(), !dbg !18
-  ret void, !dbg !19
+  call void @foo4(), !dbg !18
+  call void @foo2(), !dbg !19
+  %call = call i32 @main(), !dbg !20
+  ret void, !dbg !21
 }
 
 ; Function Attrs: noinline nounwind optnone uwtable
-define dso_local void @foo4() #0 !dbg !20 {
+define dso_local void @foo4() #0 !dbg !22 {
 entry:
-  call void @foo1(), !dbg !21
-  call void @foo2(), !dbg !22
-  call void @foo4(), !dbg !23
-  ret void, !dbg !24
+  call void @foo1(), !dbg !23
+  call void @foo2(), !dbg !24
+  call void @foo4(), !dbg !25
+  ret void, !dbg !26
 }
 
 ; Function Attrs: noinline nounwind optnone uwtable
-define dso_local i32 @main() #0 !dbg !25 {
+define dso_local i32 @main() #0 !dbg !27 {
 entry:
-  call void @foo1(), !dbg !29
-  ret i32 0, !dbg !30
+  call void @foo1(), !dbg !31
+  ret i32 0, !dbg !32
 }
 
 attributes #0 = { noinline nounwind optnone uwtable "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "min-legal-vector-width"="0" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" "unsafe-fp-math"="false" "use-soft-float"="false" }
@@ -59,23 +61,25 @@ attributes #0 = { noinline nounwind optnone uwtable "disable-tail-calls"="false"
 !8 = !DISubroutineType(types: !9)
 !9 = !{null}
 !10 = !DILocation(line: 9, column: 4, scope: !7)
-!11 = !DILocation(line: 10, column: 1, scope: !7)
-!12 = distinct !DISubprogram(name: "foo2", scope: !1, file: !1, line: 12, type: !8, scopeLine: 12, spFlags: DISPFlagDefinition, unit: !0, retainedNodes: !2)
-!13 = !DILocation(line: 13, column: 4, scope: !12)
-!14 = !DILocation(line: 14, column: 1, scope: !12)
-!15 = distinct !DISubprogram(name: "foo3", scope: !1, file: !1, line: 16, type: !8, scopeLine: 16, spFlags: DISPFlagDefinition, unit: !0, retainedNodes: !2)
-!16 = !DILocation(line: 17, column: 4, scope: !15)
-!17 = !DILocation(line: 18, column: 4, scope: !15)
-!18 = !DILocation(line: 19, column: 4, scope: !15)
-!19 = !DILocation(line: 20, column: 1, scope: !15)
-!20 = distinct !DISubprogram(name: "foo4", scope: !1, file: !1, line: 22, type: !8, scopeLine: 22, spFlags: DISPFlagDefinition, unit: !0, retainedNodes: !2)
-!21 = !DILocation(line: 23, column: 4, scope: !20)
-!22 = !DILocation(line: 24, column: 4, scope: !20)
-!23 = !DILocation(line: 25, column: 4, scope: !20)
-!24 = !DILocation(line: 26, column: 1, scope: !20)
-!25 = distinct !DISubprogram(name: "main", scope: !1, file: !1, line: 28, type: !26, scopeLine: 28, spFlags: DISPFlagDefinition, unit: !0, retainedNodes: !2)
-!26 = !DISubroutineType(types: !27)
-!27 = !{!28}
-!28 = !DIBasicType(name: "int", size: 32, encoding: DW_ATE_signed)
-!29 = !DILocation(line: 29, column: 4, scope: !25)
-!30 = !DILocation(line: 30, column: 1, scope: !25)
+!11 = !DILocation(line: 10, column: 4, scope: !7)
+!12 = !DILocation(line: 11, column: 4, scope: !7)
+!13 = !DILocation(line: 12, column: 1, scope: !7)
+!14 = distinct !DISubprogram(name: "foo2", scope: !1, file: !1, line: 14, type: !8, scopeLine: 14, spFlags: DISPFlagDefinition, unit: !0, retainedNodes: !2)
+!15 = !DILocation(line: 15, column: 4, scope: !14)
+!16 = !DILocation(line: 16, column: 1, scope: !14)
+!17 = distinct !DISubprogram(name: "foo3", scope: !1, file: !1, line: 18, type: !8, scopeLine: 18, spFlags: DISPFlagDefinition, unit: !0, retainedNodes: !2)
+!18 = !DILocation(line: 19, column: 4, scope: !17)
+!19 = !DILocation(line: 20, column: 4, scope: !17)
+!20 = !DILocation(line: 21, column: 4, scope: !17)
+!21 = !DILocation(line: 22, column: 1, scope: !17)
+!22 = distinct !DISubprogram(name: "foo4", scope: !1, file: !1, line: 24, type: !8, scopeLine: 24, spFlags: DISPFlagDefinition, unit: !0, retainedNodes: !2)
+!23 = !DILocation(line: 25, column: 4, scope: !22)
+!24 = !DILocation(line: 26, column: 4, scope: !22)
+!25 = !DILocation(line: 27, column: 4, scope: !22)
+!26 = !DILocation(line: 28, column: 1, scope: !22)
+!27 = distinct !DISubprogram(name: "main", scope: !1, file: !1, line: 30, type: !28, scopeLine: 30, spFlags: DISPFlagDefinition, unit: !0, retainedNodes: !2)
+!28 = !DISubroutineType(types: !29)
+!29 = !{!30}
+!30 = !DIBasicType(name: "int", size: 32, encoding: DW_ATE_signed)
+!31 = !DILocation(line: 31, column: 4, scope: !27)
+!32 = !DILocation(line: 32, column: 1, scope: !27)
