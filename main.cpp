@@ -121,7 +121,7 @@ int main(int argc, char **argv){
   	for(Function &F : M.get()->functions()){
 		countFunc++;
 		countBBPerFunc = 0;
-		llvm::outs() << "\nFunction Name: " << F.getName() << " = ";
+		// llvm::outs() << "\nFunction Name: " << F.getName() << " = ";
 		for(BasicBlock &B : F){
 			countBB++;
 			countBBPerFunc++;
@@ -134,7 +134,7 @@ int main(int argc, char **argv){
 				}
 			}
 		}
-		llvm::outs() << countBBPerFunc;
+		// llvm::outs() << countBBPerFunc;
   	}
 	  llvm::outs() << "\nNumber of Instruction: " << M->getInstructionCount();
 	llvm::outs() << "\nNumber of BB are : " << countBB;
