@@ -118,6 +118,17 @@ int main(int argc, char **argv){
 	int countCI = 0;
 	int countFunc = 0;
 	int countBBPerFunc = 0;
+	int countGlobalPointer = 0;
+    int countLocalPointer = 0;
+
+    for(auto &Global : M.get()->getGlobalList()) {
+        if(llvm::Value *Var = dyn_cast<llvm::Value>(&Global)) {
+            if(Global.getValueType()->isPointerTy()) {
+                countGlobalPointer++;
+            }
+        }
+    }
+
   	for(Function &F : M.get()->functions()){
 		countFunc++;
 		countBBPerFunc = 0;
@@ -126,6 +137,11 @@ int main(int argc, char **argv){
 			countBB++;
 			countBBPerFunc++;
 			for(llvm::Instruction &Inst : B) {
+                if(llvm::AllocaInst * AI = dyn_cast<llvm::AllocaInst>(&Inst)) {
+                    if(AI->getAllocatedType()->isPointerTy()) {
+                        countLocalPointer++;
+                    }
+                }
 				if(llvm::CallInst *CI = dyn_cast<llvm::CallInst>(&Inst)) {
 					llvm::Function *target_function = CI->getCalledFunction();
 					if(target_function && not target_function->isDeclaration()) {
@@ -140,5 +156,7 @@ int main(int argc, char **argv){
 	llvm::outs() << "\nNumber of BB are : " << countBB;
 	llvm::outs() << "\nNumber of CI are : " << countCI;
 	llvm::outs() << "\nNumber of Functions: " << countFunc;
-	llvm::outs() << "\nNumber of BB/Func: " << countBB/countFunc << "\n";
+	llvm::outs() << "\nNumber of BB/Func: " << countBB/countFunc;
+    llvm::outs() << "\nNumber of Local Pointer variable: " << countLocalPointer;
+    llvm::outs() << "\nNumber of Global Pointer variable: " << countGlobalPointer << "\n";
 }

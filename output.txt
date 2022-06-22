@@ -1,0 +1,171 @@
+[H[2J[3J==============================Running Analysis================================ 
+
+bzip2
+
+Number of Direct recursive calls are: 0
+
+Number of Indirect recursive calls are: 0
+
+Number of Instruction: 17288
+Number of BB are : 2711
+Number of CI are : 273
+Number of Functions: 117
+Number of BB/Func: 23
+Number of Local Pointer variable: 1
+Number of Global Pointer variable: 2
+
+
+==============================Analysis Over================================ 
+
+==============================Running Analysis================================ 
+
+gcc
+
+Number of Direct recursive calls are: 781
+
+Number of Indirect recursive calls are: 883
+
+Number of Instruction: 781730
+Number of BB are : 162917
+Number of CI are : 48411
+Number of Functions: 5645
+Number of BB/Func: 28
+Number of Local Pointer variable: 293
+Number of Global Pointer variable: 477
+
+
+==============================Analysis Over================================ 
+
+==============================Running Analysis================================ 
+
+gobmk
+
+Number of Direct recursive calls are: 1
+
+Number of Indirect recursive calls are: 2
+
+Number of Instruction: 140487
+Number of BB are : 30151
+Number of CI are : 8889
+Number of Functions: 2723
+Number of BB/Func: 11
+Number of Local Pointer variable: 27
+Number of Global Pointer variable: 27
+
+
+==============================Analysis Over================================ 
+
+==============================Running Analysis================================ 
+
+h264ref
+
+Number of Direct recursive calls are: 0
+
+Number of Indirect recursive calls are: 0
+
+Number of Instruction: 143846
+Number of BB are : 20740
+Number of CI are : 1961
+Number of Functions: 633
+Number of BB/Func: 32
+Number of Local Pointer variable: 0
+Number of Global Pointer variable: 97
+
+
+==============================Analysis Over================================ 
+
+==============================Running Analysis================================ 
+
+hmmer
+
+Number of Direct recursive calls are: 3
+
+Number of Indirect recursive calls are: 1
+
+Number of Instruction: 89778
+Number of BB are : 11245
+Number of CI are : 2139
+Number of Functions: 600
+Number of BB/Func: 18
+Number of Local Pointer variable: 1512
+Number of Global Pointer variable: 9
+
+
+==============================Analysis Over================================ 
+
+==============================Running Analysis================================ 
+
+lbm
+
+Number of Direct recursive calls are: 0
+
+Number of Indirect recursive calls are: 0
+
+Number of Instruction: 4104
+Number of BB are : 201
+Number of CI are : 30
+Number of Functions: 34
+Number of BB/Func: 5
+Number of Local Pointer variable: 0
+Number of Global Pointer variable: 2
+
+
+==============================Analysis Over================================ 
+
+==============================Running Analysis================================ 
+
+libquantum
+
+Number of Direct recursive calls are: 0
+
+Number of Indirect recursive calls are: 6
+
+Number of Instruction: 6898
+Number of BB are : 1127
+Number of CI are : 366
+Number of Functions: 142
+Number of BB/Func: 7
+Number of Local Pointer variable: 0
+Number of Global Pointer variable: 3
+
+
+==============================Analysis Over================================ 
+
+==============================Running Analysis================================ 
+
+mcf
+
+Number of Direct recursive calls are: 0
+
+Number of Indirect recursive calls are: 0
+
+Number of Instruction: 2558
+Number of BB are : 514
+Number of CI are : 30
+Number of Functions: 38
+Number of BB/Func: 13
+Number of Local Pointer variable: 1
+Number of Global Pointer variable: 2
+
+
+==============================Analysis Over================================ 
+
+==============================Running Analysis================================ 
+
+sjeng
+
+Number of Direct recursive calls are: 6
+
+Number of Indirect recursive calls are: 0
+
+Number of Instruction: 26149
+Number of BB are : 5762
+Number of CI are : 738
+Number of Functions: 173
+Number of BB/Func: 33
+Number of Local Pointer variable: 0
+Number of Global Pointer variable: 11
+
+
+==============================Analysis Over================================ 
+
